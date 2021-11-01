@@ -1,12 +1,13 @@
 package com.netcracker.db.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Contract {
     private Integer id;
     private Date contractStartDate;
     private Date contractEndDate;
-    private String contactNumber;
+    private String contractNumber;
     private Client contractOwner;
 
     public Contract(Integer id, Date contractStartDate, Date contractEndDate, String contactNumber,
@@ -14,7 +15,7 @@ public abstract class Contract {
         this.id = id;
         this.contractStartDate = contractStartDate;
         this.contractEndDate = contractEndDate;
-        this.contactNumber = contactNumber;
+        this.contractNumber = contactNumber;
         this.contractOwner = contractOwner;
     }
 
@@ -42,12 +43,12 @@ public abstract class Contract {
         this.contractEndDate = contractEndDate;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getContractNumber() {
+        return contractNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setContractNumber(String contractNumber) {
+        this.contractNumber = contractNumber;
     }
 
     public Client getContractOwner() {
@@ -56,5 +57,21 @@ public abstract class Contract {
 
     public void setContractOwner(Client contractOwner) {
         this.contractOwner = contractOwner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contract contract = (Contract) o;
+        return id.equals(contract.id) && Objects.equals(contractStartDate, contract.contractStartDate) &&
+                Objects.equals(contractEndDate, contract.contractEndDate) &&
+                Objects.equals(contractNumber, contract.contractNumber) &&
+                Objects.equals(contractOwner, contract.contractOwner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
     }
 }

@@ -3,6 +3,7 @@ package com.netcracker.db.entity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Client {
     private Integer id;
@@ -69,5 +70,20 @@ public class Client {
         int d1 = Integer.parseInt(formatter.format(birthDate));
         int d2 = Integer.parseInt(formatter.format(new Date()));
         return (d2 - d1) / 10000;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return id.equals(client.id) && Objects.equals(fullName, client.fullName) &&
+                Objects.equals(birthDate, client.birthDate) && sex == client.sex &&
+                Objects.equals(passportData, client.passportData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fullName, birthDate, sex, passportData);
     }
 }

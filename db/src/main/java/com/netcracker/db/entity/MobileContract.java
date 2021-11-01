@@ -1,6 +1,7 @@
 package com.netcracker.db.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class MobileContract extends Contract{
     private Integer minuteCount;
@@ -37,5 +38,20 @@ public class MobileContract extends Contract{
 
     public void setGbCount(Integer gbCount) {
         this.gbCount = gbCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MobileContract that = (MobileContract) o;
+        return Objects.equals(minuteCount, that.minuteCount) && Objects.equals(smsCount, that.smsCount) &&
+                Objects.equals(gbCount, that.gbCount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), minuteCount, smsCount, gbCount);
     }
 }

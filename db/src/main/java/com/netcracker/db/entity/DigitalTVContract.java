@@ -1,5 +1,6 @@
 package com.netcracker.db.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class DigitalTVContract extends Contract{
@@ -17,5 +18,21 @@ public class DigitalTVContract extends Contract{
 
     public void setChannelPackage(String[] channelPackage) {
         this.channelPackage = channelPackage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DigitalTVContract that = (DigitalTVContract) o;
+        return Arrays.equals(channelPackage, that.channelPackage);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + Arrays.hashCode(channelPackage);
+        return result;
     }
 }
