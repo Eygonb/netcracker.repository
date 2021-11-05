@@ -12,11 +12,6 @@ public class Client {
     private SexEnum sex;
     private String passportData;
 
-    private enum SexEnum {
-        MALE,
-        FEMALE
-    }
-
     public Client(Integer id, String fullName, Date birthDate, SexEnum sex, String passportData) {
         this.id = id;
         this.fullName = fullName;

@@ -6,9 +6,9 @@ import java.util.Objects;
 public class WiredInternetContract extends Contract{
     private Integer connectionSpeed;
 
-    public WiredInternetContract(Integer id, Date contractStartDate, Date contractEndDate, String contactNumber,
+    public WiredInternetContract(Integer id, Date contractStartDate, Date contractEndDate, String contractNumber,
                                  Client contractOwner, Integer connectionSpeed) {
-        super(id, contractStartDate, contractEndDate, contactNumber, contractOwner);
+        super(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
         this.connectionSpeed = connectionSpeed;
     }
 

@@ -3,12 +3,12 @@ package com.netcracker.db.entity;
 import java.util.Arrays;
 import java.util.Date;
 
-public class DigitalTVContract extends Contract{
+public class DigitalTVContract extends Contract {
     private String[] channelPackage;
 
-    public DigitalTVContract(Integer id, Date contractStartDate, Date contractEndDate, String contactNumber,
+    public DigitalTVContract(Integer id, Date contractStartDate, Date contractEndDate, String contractNumber,
                              Client contractOwner, String[] channelPackage) {
-        super(id, contractStartDate, contractEndDate, contactNumber, contractOwner);
+        super(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
         this.channelPackage = channelPackage;
     }
 

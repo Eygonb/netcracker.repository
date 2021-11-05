@@ -8,9 +8,9 @@ public class MobileContract extends Contract{
     private Integer smsCount;
     private Integer gbCount;
 
-    public MobileContract(Integer id, Date contractStartDate, Date contractEndDate, String contactNumber,
+    public MobileContract(Integer id, Date contractStartDate, Date contractEndDate, String contractNumber,
                           Client contractOwner, Integer minuteCount, Integer smsCount, Integer gbCount) {
-        super(id, contractStartDate, contractEndDate, contactNumber, contractOwner);
+        super(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
         this.minuteCount = minuteCount;
         this.smsCount = smsCount;
         this.gbCount = gbCount;
