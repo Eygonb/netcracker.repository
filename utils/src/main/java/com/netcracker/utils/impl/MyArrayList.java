@@ -33,7 +33,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public void add(T o) {
         if (pointer == array.length - 1) {
-            resize((int) (array.length * RESIZE_MULTIPLIER));
+            resize((int) (array.length * RESIZE_MULTIPLIER + 1));
         }
         array[pointer++] = o;
     }
