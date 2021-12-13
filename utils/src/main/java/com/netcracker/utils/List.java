@@ -1,6 +1,6 @@
 package com.netcracker.utils;
 
-public interface List<T> {
+public interface List<T> extends Iterable<T> {
 
     /**
      * @return the number of elements in this list.

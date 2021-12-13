@@ -1,13 +1,22 @@
 package com.netcracker.utils.impl;
 
 import com.netcracker.utils.List;
+import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
     private final int INIT_SIZE = 16;
     private final int CUT_RATE = 4;
     private final double RESIZE_MULTIPLIER = 1.5;
-    private Object[] array = new Object[INIT_SIZE];
+    private Object[] array;
     private int pointer = 0;
+
+    public MyArrayList() {
+        array = new Object[INIT_SIZE];
+    }
+
+    public MyArrayList(int arrSize) {
+        array = new Object[arrSize];
+    }
 
     /**
      * @return the number of elements in this list.
@@ -46,6 +55,7 @@ public class MyArrayList<T> implements List<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T remove(int index) {
         if (index >= pointer) throw new IndexOutOfBoundsException();
 
@@ -109,6 +119,7 @@ public class MyArrayList<T> implements List<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T get(int index) {
         if (index >= pointer) throw new IndexOutOfBoundsException();
 
@@ -157,5 +168,30 @@ public class MyArrayList<T> implements List<T> {
         Object[] newArray = new Object[newLength];
         System.arraycopy(array, 0, newArray, 0, pointer);
         array = newArray;
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+            int cursor = 0;
+            @Override
+            public boolean hasNext() {
+                return cursor < size();
+            }
+
+            @Override
+            public T next() {
+                if(!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return (T) array[cursor++];
+            }
+        };
     }
 }
