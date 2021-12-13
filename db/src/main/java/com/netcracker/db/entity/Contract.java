@@ -74,4 +74,6 @@ public abstract class Contract {
     public int hashCode() {
         return Objects.hash(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
     }
+
+    public abstract Contract clone();
 }

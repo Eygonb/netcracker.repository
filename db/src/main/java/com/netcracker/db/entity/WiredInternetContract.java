@@ -33,4 +33,10 @@ public class WiredInternetContract extends Contract{
     public int hashCode() {
         return Objects.hash(super.hashCode(), connectionSpeed);
     }
+
+    @Override
+    public WiredInternetContract clone() {
+        return new WiredInternetContract(getId(), getContractStartDate(), getContractEndDate(), getContractNumber(),
+                getContractOwner().clone(), getConnectionSpeed());
+    }
 }

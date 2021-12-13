@@ -20,6 +20,14 @@ public class Client {
         this.passportData = passportData;
     }
 
+    public Client(Client client) {
+        this.id = client.id;
+        this.fullName = client.fullName;
+        this.birthDate = client.birthDate;
+        this.sex = client.sex;
+        this.passportData = client.passportData;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -80,5 +88,9 @@ public class Client {
     @Override
     public int hashCode() {
         return Objects.hash(id, fullName, birthDate, sex, passportData);
+    }
+
+    public Client clone() {
+        return new Client(this);
     }
 }
