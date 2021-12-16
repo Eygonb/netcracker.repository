@@ -10,8 +10,8 @@ public class BubbleSorter<T> implements ISorter<T> {
     public void sort(List<T> list, Comparator<T> comparator) {
         for (int i = list.size() - 1; i > 0; i--) {
             for (int j = 0; j < i; j++) {
-                if (comparator.compare(list.get(i), list.get(i + 1)) > 0)
-                    swap(list, i, i + 1);
+                if (comparator.compare(list.get(j), list.get(j + 1)) > 0)
+                    swap(list, j, j + 1);
             }
         }
     }

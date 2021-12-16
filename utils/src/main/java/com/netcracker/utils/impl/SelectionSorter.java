@@ -5,7 +5,7 @@ import com.netcracker.utils.List;
 
 import java.util.Comparator;
 
-public class MergeSorter<T> implements ISorter<T> {
+public class SelectionSorter<T> implements ISorter<T> {
     @Override
     public void sort(List<T> list, Comparator<T> comparator) {
         for (int min = 0; min < list.size()-1; min++) {

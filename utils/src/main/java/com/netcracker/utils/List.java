@@ -70,4 +70,17 @@ public interface List<T> extends Iterable<T> {
      * or -1 if this list does not contain the element
      */
     int indexOf(T o);
+
+
+    /**
+     * Returns an array containing all of the elements in this list
+     * in proper sequence (from first to last element).
+     *
+     * <p>The returned array will be "safe" in that no references to it are
+     * maintained by this list.
+     *
+     * @return an array containing all of the elements in this list in
+     *         proper sequence
+     */
+    T[] toArray(T[] a);
 }

@@ -1,19 +1,24 @@
 package com.netcracker.db.repository.impl;
 
 import com.netcracker.db.entity.*;
+import com.netcracker.utils.ISorter;
 import com.netcracker.utils.List;
+import com.netcracker.utils.impl.SelectionSorter;
 import com.netcracker.utils.impl.MyArrayList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 
 public class ContractRepositoryImplTest {
     private ContractRepositoryImpl contractRepository;
     private static Client client;
     private static List<Contract> expectedValues = new MyArrayList<>();
+    private static ISorter<Contract> selectionSorter = new SelectionSorter<>();
 
     @BeforeClass
     public static void fillExpectedValues() {
@@ -66,5 +71,24 @@ public class ContractRepositoryImplTest {
         for (int i = expectedValues.size(); i < expectedValues.size() + testValue.size(); i++) {
             Assert.assertEquals(testValue.get(i - expectedValues.size()), contractRepository.getById(i + 1));
         }
+    }
+
+    @Test
+    public void sortTest() {
+        Comparator<Contract> comp1 = Comparator.comparingInt(Contract::getId);
+        Comparator<Contract> comp2 = Comparator.comparing(Contract::getContractStartDate);
+
+        List<Contract> list = contractRepository.getContracts();
+        Contract[] arr1 = list.toArray(new Contract[0]);
+        Contract[] arr2 = contractRepository.getContracts().toArray(new Contract[0]);
+        Arrays.sort(arr1, comp1);
+        Arrays.sort(arr2, comp2);
+
+        contractRepository.sort(comp1);
+        Assert.assertArrayEquals(arr1, contractRepository.getContracts().toArray(new Contract[0]));
+
+        contractRepository.setSorter(selectionSorter);
+        contractRepository.sort(comp2);
+        Assert.assertArrayEquals(arr2, contractRepository.getContracts().toArray(new Contract[0]));
     }
 }
