@@ -54,4 +54,10 @@ public class MobileContract extends Contract{
     public int hashCode() {
         return Objects.hash(super.hashCode(), minuteCount, smsCount, gbCount);
     }
+
+    @Override
+    public MobileContract clone() {
+        return new MobileContract(getId(), getContractStartDate(), getContractEndDate(), getContractNumber(),
+                getContractOwner().clone(), getMinuteCount(), getSmsCount(), getGbCount());
+    }
 }

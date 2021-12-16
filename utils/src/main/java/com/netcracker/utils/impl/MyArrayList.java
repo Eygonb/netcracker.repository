@@ -1,13 +1,22 @@
 package com.netcracker.utils.impl;
 
 import com.netcracker.utils.List;
+import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
     private final int INIT_SIZE = 16;
     private final int CUT_RATE = 4;
     private final double RESIZE_MULTIPLIER = 1.5;
-    private Object[] array = new Object[INIT_SIZE];
+    private Object[] array;
     private int pointer = 0;
+
+    public MyArrayList() {
+        array = new Object[INIT_SIZE];
+    }
+
+    public MyArrayList(int arrSize) {
+        array = new Object[arrSize];
+    }
 
     /**
      * @return the number of elements in this list.
@@ -46,6 +55,7 @@ public class MyArrayList<T> implements List<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T remove(int index) {
         if (index >= pointer) throw new IndexOutOfBoundsException();
 
@@ -109,6 +119,7 @@ public class MyArrayList<T> implements List<T> {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T get(int index) {
         if (index >= pointer) throw new IndexOutOfBoundsException();
 
@@ -148,6 +159,42 @@ public class MyArrayList<T> implements List<T> {
     }
 
     /**
+     * Returns an array containing all of the elements in this list in proper
+     * sequence (from first to last element); the runtime type of the returned
+     * array is that of the specified array.  If the list fits in the
+     * specified array, it is returned therein.  Otherwise, a new array is
+     * allocated with the runtime type of the specified array and the size of
+     * this list.
+     *
+     * <p>If the list fits in the specified array with room to spare
+     * (i.e., the array has more elements than the list), the element in
+     * the array immediately following the end of the collection is set to
+     * {@code null}.  (This is useful in determining the length of the
+     * list <i>only</i> if the caller knows that the list does not contain
+     * any null elements.)
+     *
+     * @param a the array into which the elements of the list are to
+     *          be stored, if it is big enough; otherwise, a new array of the
+     *          same runtime type is allocated for this purpose.
+     * @return an array containing the elements of the list
+     * @throws ArrayStoreException if the runtime type of the specified array
+     *         is not a supertype of the runtime type of every element in
+     *         this list
+     * @throws NullPointerException if the specified array is null
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public T[] toArray(T[] a) {
+        if (a.length < pointer)
+            // Make a new array of a's runtime type, but my contents:
+            return (T[]) Arrays.copyOf(array, pointer, a.getClass());
+        System.arraycopy(array, 0, a, 0, pointer);
+        if (a.length > pointer)
+            a[pointer] = null;
+        return a;
+    }
+
+    /**
      * Resize the capacity of this list, to increase size of list so that it can contain
      * the required number of elements, or decrease so that the list does not take up extra memory
      *
@@ -157,5 +204,30 @@ public class MyArrayList<T> implements List<T> {
         Object[] newArray = new Object[newLength];
         System.arraycopy(array, 0, newArray, 0, pointer);
         array = newArray;
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+            int cursor = 0;
+            @Override
+            public boolean hasNext() {
+                return cursor < size();
+            }
+
+            @Override
+            public T next() {
+                if(!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return (T) array[cursor++];
+            }
+        };
     }
 }

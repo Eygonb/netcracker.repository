@@ -2,15 +2,31 @@ package com.netcracker.db.repository.impl;
 
 import com.netcracker.db.entity.Contract;
 import com.netcracker.db.repository.ContractRepository;
+import com.netcracker.utils.ISorter;
 import com.netcracker.utils.List;
+import com.netcracker.utils.impl.BubbleSorter;
 import com.netcracker.utils.impl.MyArrayList;
+
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class ContractRepositoryImpl implements ContractRepository {
     private List<Contract> contracts;
+    private ISorter<Contract> sorter;
 
     public ContractRepositoryImpl() {
         contracts = new MyArrayList<>();
+        sorter = new BubbleSorter<>();
+    }
+
+    public ContractRepositoryImpl(ISorter<Contract> sorter) {
+        contracts = new MyArrayList<>();
+        this.sorter = sorter;
+    }
+
+    public ContractRepositoryImpl(List<Contract> contracts, ISorter<Contract> sorter) {
+        this.contracts = contracts;
+        this.sorter = sorter;
     }
 
     /**
@@ -74,5 +90,51 @@ public class ContractRepositoryImpl implements ContractRepository {
             }
         }
         return false;
+    }
+
+    /**
+     * Return ContractRepositoryImpl with selected items by a typed predicate
+     *
+     * @param p a typed predicate containing a selection condition
+     * @return ContractRepositoryImpl with selected items
+     */
+    public ContractRepositoryImpl getByPredicate(Predicate<Contract> p) {
+        ContractRepositoryImpl newRep = new ContractRepositoryImpl();
+        for (Contract c : contracts) {
+            if (p.test(c)) {
+                newRep.save(c);
+            }
+        }
+        return null;
+    }
+
+    public ISorter<Contract> getSorter() {
+        return sorter;
+    }
+
+    public void setSorter(ISorter<Contract> sorter) {
+        this.sorter = sorter;
+    }
+
+    /**
+     * Sort list of contracts via sorter
+     *
+     * @param comparator a typed comparator containing a condition of compare element
+     */
+    public void sort(Comparator<Contract> comparator) {
+        sorter.sort(contracts, comparator);
+    }
+
+    /**
+     * Return deep copy of list of contracts
+     *
+     * @return deep copy of list of contracts
+     */
+    public List<Contract> getContracts() {
+        List<Contract> copy = new MyArrayList<>();
+        for(Contract c : contracts) {
+            copy.add(c.clone());
+        }
+        return copy;
     }
 }

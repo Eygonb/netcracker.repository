@@ -35,4 +35,10 @@ public class DigitalTVContract extends Contract {
         result = 31 * result + Arrays.hashCode(channelPackage);
         return result;
     }
+
+    @Override
+    public DigitalTVContract clone() {
+        return new DigitalTVContract(getId(), getContractStartDate(), getContractEndDate(), getContractNumber(),
+                getContractOwner().clone(), getChannelPackage().clone());
+    }
 }
