@@ -92,6 +92,12 @@ public class ContractRepositoryImpl implements ContractRepository {
         return false;
     }
 
+    /**
+     * Return ContractRepositoryImpl with selected items by a typed predicate
+     *
+     * @param p a typed predicate containing a selection condition
+     * @return ContractRepositoryImpl with selected items
+     */
     public ContractRepositoryImpl getByPredicate(Predicate<Contract> p) {
         ContractRepositoryImpl newRep = new ContractRepositoryImpl();
         for (Contract c : contracts) {
@@ -110,10 +116,20 @@ public class ContractRepositoryImpl implements ContractRepository {
         this.sorter = sorter;
     }
 
+    /**
+     * Sort list of contracts via sorter
+     *
+     * @param comparator a typed comparator containing a condition of compare element
+     */
     public void sort(Comparator<Contract> comparator) {
         sorter.sort(contracts, comparator);
     }
 
+    /**
+     * Return deep copy of list of contracts
+     *
+     * @return deep copy of list of contracts
+     */
     public List<Contract> getContracts() {
         List<Contract> copy = new MyArrayList<>();
         for(Contract c : contracts) {
