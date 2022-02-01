@@ -19,6 +19,9 @@ public abstract class Contract {
         this.contractOwner = contractOwner;
     }
 
+    public Contract() {
+    }
+
     public Integer getId() {
         return id;
     }

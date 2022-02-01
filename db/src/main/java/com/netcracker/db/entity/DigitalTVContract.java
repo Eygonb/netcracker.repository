@@ -12,6 +12,9 @@ public class DigitalTVContract extends Contract {
         this.channelPackage = channelPackage;
     }
 
+    public DigitalTVContract() {
+    }
+
     public String[] getChannelPackage() {
         return channelPackage;
     }
