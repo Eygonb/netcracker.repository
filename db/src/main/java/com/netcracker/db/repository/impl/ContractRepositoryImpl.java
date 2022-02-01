@@ -1,5 +1,6 @@
 package com.netcracker.db.repository.impl;
 
+import com.netcracker.db.entity.Client;
 import com.netcracker.db.entity.Contract;
 import com.netcracker.db.repository.ContractRepository;
 import com.netcracker.utils.ISorter;
@@ -7,7 +8,9 @@ import com.netcracker.utils.List;
 import com.netcracker.utils.impl.BubbleSorter;
 import com.netcracker.utils.impl.MyArrayList;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ContractRepositoryImpl implements ContractRepository {
@@ -36,15 +39,26 @@ public class ContractRepositoryImpl implements ContractRepository {
      */
     @Override
     public void save(Contract contract) {
-        if(contract == null) return;
+        if (contract == null) return;
 
-        for(int i = 0; i < contracts.size(); i++) {
-            if(contract.getId().equals(contracts.get(i).getId())) {
-                contracts.set(i, contract);
-                return;
+        setIdToClient(contract.getContractOwner());
+
+        if (contract.getId() == null) {
+            Optional<Integer> maxId = Arrays.stream(contracts.toArray(new Contract[0]))
+                    .map(Contract.class::cast)
+                    .map(Contract::getId)
+                    .max(Comparator.comparing(Integer::valueOf));
+            Integer newId = maxId.orElse(0) + 1;
+            contract.setId(newId);
+            contracts.add(contract);
+        } else {
+            for (int i = 0; i < contracts.size(); i++) {
+                if (contracts.get(i).getId().equals(contract.getId())) {
+                    contracts.set(i, contract);
+                    return;
+                }
             }
         }
-        contracts.add(contract);
     }
 
     /**
@@ -54,7 +68,7 @@ public class ContractRepositoryImpl implements ContractRepository {
      */
     @Override
     public void saveAll(List<Contract> list) {
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             save(list.get(i));
         }
     }
@@ -67,8 +81,8 @@ public class ContractRepositoryImpl implements ContractRepository {
      */
     @Override
     public Contract getById(Integer id) {
-        for(int i = 0; i < contracts.size(); i++) {
-            if(id.equals(contracts.get(i).getId())) {
+        for (int i = 0; i < contracts.size(); i++) {
+            if (id.equals(contracts.get(i).getId())) {
                 return contracts.get(i);
             }
         }
@@ -83,8 +97,8 @@ public class ContractRepositoryImpl implements ContractRepository {
      */
     @Override
     public boolean removeById(Integer id) {
-        for(int i = 0; i < contracts.size(); i++) {
-            if(id.equals(contracts.get(i).getId())) {
+        for (int i = 0; i < contracts.size(); i++) {
+            if (id.equals(contracts.get(i).getId())) {
                 contracts.remove(i);
                 return true;
             }
@@ -132,9 +146,30 @@ public class ContractRepositoryImpl implements ContractRepository {
      */
     public List<Contract> getContracts() {
         List<Contract> copy = new MyArrayList<>();
-        for(Contract c : contracts) {
+        for (Contract c : contracts) {
             copy.add(c.clone());
         }
         return copy;
+    }
+
+    private void setIdToClient(Client client) {
+        if (client.getId() == null) {
+            Optional<Client> oldClient = Arrays.stream(contracts.toArray(new Contract[0]))
+                    .map(Contract.class::cast)
+                    .map(Contract::getContractOwner)
+                    .filter(c -> c.getPassportData().equals(client.getPassportData()))
+                    .findFirst();
+            if (oldClient.isPresent()) {
+                client.setId(oldClient.get().getId());
+            } else {
+                Optional<Integer> maxClientId = Arrays.stream(contracts.toArray(new Contract[0]))
+                        .map(Contract.class::cast)
+                        .map(Contract::getContractOwner)
+                        .map(Client::getId)
+                        .max(Comparator.comparing(Integer::valueOf));
+                Integer newId = maxClientId.orElse(0) + 1;
+                client.setId(newId);
+            }
+        }
     }
 }
