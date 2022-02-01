@@ -6,14 +6,17 @@ import java.util.Objects;
 public class MobileContract extends Contract{
     private Integer minuteCount;
     private Integer smsCount;
-    private Integer gbCount;
+    private Integer trafficCount;
 
     public MobileContract(Integer id, Date contractStartDate, Date contractEndDate, String contractNumber,
-                          Client contractOwner, Integer minuteCount, Integer smsCount, Integer gbCount) {
+                          Client contractOwner, Integer minuteCount, Integer smsCount, Integer trafficCount) {
         super(id, contractStartDate, contractEndDate, contractNumber, contractOwner);
         this.minuteCount = minuteCount;
         this.smsCount = smsCount;
-        this.gbCount = gbCount;
+        this.trafficCount = trafficCount;
+    }
+
+    public MobileContract() {
     }
 
     public Integer getMinuteCount() {
@@ -32,12 +35,12 @@ public class MobileContract extends Contract{
         this.smsCount = smsCount;
     }
 
-    public Integer getGbCount() {
-        return gbCount;
+    public Integer getTrafficCount() {
+        return trafficCount;
     }
 
-    public void setGbCount(Integer gbCount) {
-        this.gbCount = gbCount;
+    public void setTrafficCount(Integer trafficCount) {
+        this.trafficCount = trafficCount;
     }
 
     @Override
@@ -47,17 +50,17 @@ public class MobileContract extends Contract{
         if (!super.equals(o)) return false;
         MobileContract that = (MobileContract) o;
         return Objects.equals(minuteCount, that.minuteCount) && Objects.equals(smsCount, that.smsCount) &&
-                Objects.equals(gbCount, that.gbCount);
+                Objects.equals(trafficCount, that.trafficCount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), minuteCount, smsCount, gbCount);
+        return Objects.hash(super.hashCode(), minuteCount, smsCount, trafficCount);
     }
 
     @Override
     public MobileContract clone() {
         return new MobileContract(getId(), getContractStartDate(), getContractEndDate(), getContractNumber(),
-                getContractOwner().clone(), getMinuteCount(), getSmsCount(), getGbCount());
+                getContractOwner().clone(), getMinuteCount(), getSmsCount(), getTrafficCount());
     }
 }

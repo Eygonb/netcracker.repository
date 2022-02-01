@@ -12,6 +12,9 @@ public class WiredInternetContract extends Contract{
         this.connectionSpeed = connectionSpeed;
     }
 
+    public WiredInternetContract() {
+    }
+
     public Integer getConnectionSpeed() {
         return connectionSpeed;
     }

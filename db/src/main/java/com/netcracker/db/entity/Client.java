@@ -28,6 +28,9 @@ public class Client {
         this.passportData = client.passportData;
     }
 
+    public Client() {
+    }
+
     public Integer getId() {
         return id;
     }
