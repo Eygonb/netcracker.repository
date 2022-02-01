@@ -77,7 +77,9 @@ public interface List<T> extends Iterable<T> {
      * in proper sequence (from first to last element).
      *
      * <p>The returned array will be "safe" in that no references to it are
-     * maintained by this list.
+     * maintained by this list.</p>
+     *
+     * <p>!!! "a" must be "new T[0]"</p>
      *
      * @return an array containing all of the elements in this list in
      *         proper sequence
