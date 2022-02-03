@@ -17,7 +17,7 @@ public class DigitalTVContractValidator implements ContractValidator {
 
         if (digitalTVContract.getChannelPackage() == null) {
             result.addError("Contract channel package is null");
-        } else if (digitalTVContract.getContractNumber().isEmpty()) {
+        } else if (digitalTVContract.getChannelPackage().length == 0) {
             result.addError("Contract channel package is empty");
         }
 

@@ -2,6 +2,13 @@ package com.netcracker.db.parser.csv;
 
 import com.netcracker.db.entity.*;
 import com.netcracker.db.repository.ContractRepository;
+import com.netcracker.db.validator.ContractValidator;
+import com.netcracker.db.validator.impl.AbstractContractValidator;
+import com.netcracker.db.validator.impl.DigitalTVContractValidator;
+import com.netcracker.db.validator.impl.MobileContractValidator;
+import com.netcracker.db.validator.impl.WiredInternetContractValidator;
+import com.netcracker.db.validator.model.ValidationEnum;
+import com.netcracker.db.validator.model.ValidationResult;
 import com.netcracker.utils.List;
 import com.netcracker.utils.impl.MyArrayList;
 import com.opencsv.CSVParser;
@@ -19,7 +26,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class CsvLoader {
-    public void loadRepository(String pathToFile, ContractRepository repository) {
+    private List<ContractValidator> validators;
+
+    public CsvLoader() {
+        validators = new MyArrayList<>();
+        validators.add(new AbstractContractValidator());
+        validators.add(new DigitalTVContractValidator());
+        validators.add(new MobileContractValidator());
+        validators.add(new WiredInternetContractValidator());
+    }
+
+    public ValidationResult loadRepository(String pathToFile, ContractRepository repository) {
         List<String[]> parsedCsv;
 
         try {
@@ -30,14 +47,36 @@ public class CsvLoader {
         }
 
         List<Contract> contracts = parseContracts(parsedCsv);
-        List<Client> clients = parseOwner(parsedCsv);
+        List<Client> owners = parseOwners(parsedCsv);
+
+        ValidationResult validationResult = new ValidationResult();
 
         for (int i = 0; i < contracts.size(); i++) {
-            contracts.get(i).setContractOwner(clients.get(i));
+            contracts.get(i).setContractOwner(owners.get(i));
 
-            repository.save(contracts.get(i));
+            ValidationResult oneValidationResult = validateContract(contracts.get(i));
+
+            if (oneValidationResult.getResult().equals(ValidationEnum.OK)) {
+                repository.save(contracts.get(i));
+            }
+
+            validationResult.addAllError(oneValidationResult.getErrors());
         }
 
+        return validationResult;
+    }
+
+    private ValidationResult validateContract(Contract contract) {
+        ValidationResult result = new ValidationResult();
+
+        for (ContractValidator validator : validators) {
+            ValidationResult oneResult = validator.validateContract(contract);
+
+            result.setResult(oneResult.getResult());
+            result.addAllError(oneResult.getErrors());
+        }
+
+        return result;
     }
 
     private List<String[]> parseCsv(String pathToFile) throws URISyntaxException, IOException, CsvValidationException {
@@ -96,8 +135,10 @@ public class CsvLoader {
                 }
                 case "DigitalTV" -> {
                     DigitalTVContract digitalTVContract = new DigitalTVContract();
-
-                    digitalTVContract.setChannelPackage(string[8].split(","));
+                    String[] channels = string[8].split(",");
+                    if (channels.length == 1 && channels[0].isEmpty())
+                        channels = new String[0];
+                    digitalTVContract.setChannelPackage(channels);
 
                     contract = digitalTVContract;
                 }
@@ -125,28 +166,28 @@ public class CsvLoader {
         return contracts;
     }
 
-    private List<Client> parseOwner(List<String[]> parsedCsv) {
+    private List<Client> parseOwners(List<String[]> parsedCsv) {
         SimpleDateFormat dateTimeParser = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
         List<Client> result = new MyArrayList<>();
 
         for (String[] string : parsedCsv) {
-            Client client = new Client();
+            Client owner = new Client();
 
-            client.setFullName(string[0]);
+            owner.setFullName(string[0]);
             try {
-                client.setBirthDate(dateTimeParser.parse(string[1]));
+                owner.setBirthDate(dateTimeParser.parse(string[1]));
             } catch (ParseException exception) {
-                client.setBirthDate(null);
+                owner.setBirthDate(null);
             }
             try {
-                client.setSex(SexEnum.valueOf(string[2]));
+                owner.setSex(SexEnum.valueOf(string[2]));
             } catch (IllegalArgumentException e) {
-                client.setSex(null);
+                owner.setSex(null);
             }
-            client.setPassportData(string[3]);
+            owner.setPassportData(string[3]);
 
-            result.add(client);
+            result.add(owner);
         }
 
         return result;
