@@ -44,6 +44,10 @@ public class ValidationResult {
         return validationErrors.get(index);
     }
 
+    public List<String> getErrors() {
+        return validationErrors;
+    }
+
     public void setError(int index, String error) {
         validationErrors.set(index, error);
     }
