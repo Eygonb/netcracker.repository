@@ -7,6 +7,7 @@ import com.netcracker.utils.ISorter;
 import com.netcracker.utils.List;
 import com.netcracker.utils.impl.BubbleSorter;
 import com.netcracker.utils.impl.MyArrayList;
+import org.di.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -15,6 +16,8 @@ import java.util.function.Predicate;
 
 public class ContractRepositoryImpl implements ContractRepository {
     private List<Contract> contracts;
+
+    @Autowired
     private ISorter<Contract> sorter;
 
     public ContractRepositoryImpl() {
@@ -59,6 +62,7 @@ public class ContractRepositoryImpl implements ContractRepository {
                 }
             }
         }
+        contracts.add(contract);
     }
 
     /**

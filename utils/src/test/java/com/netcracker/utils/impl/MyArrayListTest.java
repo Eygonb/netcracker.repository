@@ -29,6 +29,15 @@ public class MyArrayListTest {
     }
 
     @Test
+    public void addAllTest() {
+        List<Integer> newList = new MyArrayList<>();
+
+        newList.addAll(list);
+
+        Assert.assertEquals(list.toArray(new Integer[0]), newList.toArray(new Integer[0]));
+    }
+
+    @Test
     public void sizeTest() {
         Assert.assertEquals(expectedValues.length, list.size());
     }

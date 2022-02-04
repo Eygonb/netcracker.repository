@@ -18,6 +18,14 @@ public interface List<T> extends Iterable<T> {
      */
     void add(T o);
 
+
+    /**
+     * Add all elements of the specified list to this list.
+     *
+     * @param list list containing elements to be added to this list
+     */
+    void addAll(List<T> list);
+
     /**
      * Removes the element at the specified position in this list
      * @param index the index of the element to be removed

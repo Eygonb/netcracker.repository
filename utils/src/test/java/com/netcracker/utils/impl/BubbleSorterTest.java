@@ -3,21 +3,27 @@ package com.netcracker.utils.impl;
 import com.netcracker.db.entity.*;
 import com.netcracker.utils.ISorter;
 import com.netcracker.utils.List;
+import org.di.Application;
+import org.di.ApplicationContext;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
 
 public class BubbleSorterTest {
+    private static ApplicationContext app;
     private static Client client;
-    private static List<Contract> expectedValues = new MyArrayList<>();
-    private static ISorter<Contract> sorter = new BubbleSorter<>();
+    private static List<Contract> expectedValues;
+    private static ISorter<Contract> sorter;
 
     @BeforeClass
     public static void fillExpectedValues() {
+        app = Application.run(new HashMap<>(Map.of(ISorter.class, BubbleSorter.class)));
+
+        sorter = app.getObject(ISorter.class);
+        expectedValues = app.getObject(List.class);
+
         client = new Client(0, "TEST_FN", new Date(), SexEnum.MALE,
                 "TEST_PASSPORT_DATA");
         expectedValues.add(new DigitalTVContract(1, new Date(), new Date(), "1", client,

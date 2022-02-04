@@ -4,20 +4,29 @@ import com.netcracker.db.entity.*;
 import com.netcracker.db.repository.impl.ContractRepositoryImpl;
 import com.netcracker.db.validator.model.ValidationEnum;
 import com.netcracker.db.validator.model.ValidationResult;
+import com.netcracker.utils.ISorter;
+import com.netcracker.utils.impl.SelectionSorter;
+import org.di.Application;
+import org.di.ApplicationContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CsvLoaderTest {
+    private static ApplicationContext app;
     private static CsvLoader loader;
     ContractRepositoryImpl repository;
 
     @Before
     public void init() {
-        loader = new CsvLoader();
+        app = Application.run(new HashMap<>(Map.of(ISorter.class, SelectionSorter.class)));
+
+        loader = app.getObject(CsvLoader.class);
         repository = new ContractRepositoryImpl();
     }
 

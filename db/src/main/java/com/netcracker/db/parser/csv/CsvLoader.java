@@ -16,6 +16,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import org.di.annotation.AutowiredValidators;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -26,15 +27,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class CsvLoader {
+    @AutowiredValidators
     private List<ContractValidator> validators;
-
-    public CsvLoader() {
-        validators = new MyArrayList<>();
-        validators.add(new AbstractContractValidator());
-        validators.add(new DigitalTVContractValidator());
-        validators.add(new MobileContractValidator());
-        validators.add(new WiredInternetContractValidator());
-    }
 
     public ValidationResult loadRepository(String pathToFile, ContractRepository repository) {
         List<String[]> parsedCsv;

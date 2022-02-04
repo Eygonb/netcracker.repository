@@ -1,6 +1,7 @@
 package com.netcracker.utils.impl;
 
 import com.netcracker.utils.List;
+
 import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
@@ -45,6 +46,22 @@ public class MyArrayList<T> implements List<T> {
             resize((int) (array.length * RESIZE_MULTIPLIER));
         }
         array[pointer++] = o;
+    }
+
+    /**
+     * Add all elements of the specified list to this list.
+     *
+     * @param list list containing elements to be added to this list
+     */
+    @Override
+    public void addAll(List<T> list) {
+        Object[] temp = list.toArray((T[]) new Object[0]);
+
+        resize(array.length + temp.length);
+        System.arraycopy(temp, 0,
+                array, pointer,
+                temp.length);
+        pointer += temp.length;
     }
 
     /**
@@ -177,9 +194,9 @@ public class MyArrayList<T> implements List<T> {
      *          be stored, if it is big enough; otherwise, a new array of the
      *          same runtime type is allocated for this purpose.
      * @return an array containing the elements of the list
-     * @throws ArrayStoreException if the runtime type of the specified array
-     *         is not a supertype of the runtime type of every element in
-     *         this list
+     * @throws ArrayStoreException  if the runtime type of the specified array
+     *                              is not a supertype of the runtime type of every element in
+     *                              this list
      * @throws NullPointerException if the specified array is null
      */
     @Override
@@ -216,6 +233,7 @@ public class MyArrayList<T> implements List<T> {
     public Iterator<T> iterator() {
         return new Iterator<>() {
             int cursor = 0;
+
             @Override
             public boolean hasNext() {
                 return cursor < size();
@@ -223,7 +241,7 @@ public class MyArrayList<T> implements List<T> {
 
             @Override
             public T next() {
-                if(!hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 return (T) array[cursor++];
